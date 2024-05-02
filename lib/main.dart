@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'view/auth/login_screen.dart';
+import 'view/auth/otp_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Todo List',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: const LoginScreen(),
+      home: const OtpScreen(),
     );
   }
 }
