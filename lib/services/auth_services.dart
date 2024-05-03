@@ -49,4 +49,14 @@ class AuthServices {
       throw Exception(e);
     }
   }
+
+
+   //signOut from the app
+  Future<void> signOutUser() async {
+    try {
+      await firebaseAuth.signOut();
+    } catch (e) {
+      log('\n signOut  Failed: $e');
+    }
+  }
 }

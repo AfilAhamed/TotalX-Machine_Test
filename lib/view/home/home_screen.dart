@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list_application/controller/auth_controller.dart';
+import 'package:todo_list_application/controller/user_controller.dart';
+import 'package:todo_list_application/view/auth/login_screen.dart';
 import 'package:todo_list_application/view/home/widgets/add_user_dailog.dart';
 import 'package:todo_list_application/view/home/widgets/sort_bottom_sheet.dart';
 import 'widgets/user_card.dart';
@@ -37,100 +41,128 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+        actions: [
+          Consumer<AuthController>(
+              builder: (context, authProvider, child) => IconButton(
+                  onPressed: () {
+                    authProvider
+                        .signOut()
+                        .then((value) => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            )));
+                  },
+                  icon: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                  ))),
+          const SizedBox(
+            width: 3,
+          )
+        ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                Row(
+      body: Consumer<UserController>(
+        builder: (context, userProvider, child) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(left: mq.width * 0.03),
-                            child: const Icon(
-                              Icons.search_rounded,
-                              size: 30,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: mq.width * 0.03),
+                                child: const Icon(
+                                  Icons.search_rounded,
+                                  size: 30,
+                                ),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 16),
+                              hintText: '  search by name',
+                              hintStyle: GoogleFonts.montserrat(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade500,
+                                    width: 1,
+                                  )),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Colors.black,
+                                    width: 2,
+                                  )),
                             ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 16),
-                          hintText: '  search by name',
-                          hintStyle: GoogleFonts.montserrat(
-                              color: Colors.grey.shade600,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade500,
-                                width: 1,
-                              )),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              )),
                         ),
-                      ),
+                        SizedBox(
+                          width: mq.width * 0.02,
+                        ),
+                        IconButton(
+                          style: ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(11))),
+                              backgroundColor:
+                                  const MaterialStatePropertyAll(Colors.black)),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  const SortBottomSheet(), // Sorting Bottom Sheet
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.filter_list_outlined,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
-                      width: mq.width * 0.02,
+                      height: mq.height * 0.02,
                     ),
-                    IconButton(
-                      style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(11))),
-                          backgroundColor:
-                              const MaterialStatePropertyAll(Colors.black)),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          
-                          context: context,
-                          builder: (context) => const SortBottomSheet(),// Sorting Bottom Sheet
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.filter_list_outlined,
-                        color: Colors.white,
-                        size: 28,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Users Lists',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.left,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: mq.height * 0.02,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Users Lists',
-                    style: GoogleFonts.montserrat(
-                        fontSize: 17, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.left,
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
+                  child: ListView.builder(
+                    itemCount: userProvider.usersList.length,
+                    itemBuilder: (context, index) {
+                      final data = userProvider.usersList[index];
+                      return UserCard(
+                        user: data,
+                      ); //User Details Card
+                    },
                   ),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
-              child: ListView.builder(
-                itemCount: 9,
-                itemBuilder: (context, index) {
-                  return const UserCard(); //User Details Card
-                },
-              ),
-            ),
-          )
-        ],
+              )
+            ],
+          );
+        },
       ),
       floatingActionButton: SizedBox(
         height: mq.height * 0.10,
@@ -141,7 +173,6 @@ class HomeScreen extends StatelessWidget {
             shape: const CircleBorder(),
             onPressed: () {
               showDialog(
-
                 context: context,
                 builder: (BuildContext context) {
                   return const AddUserDailog();

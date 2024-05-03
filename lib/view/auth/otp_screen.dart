@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_application/controller/auth_controller.dart';
+import 'package:todo_list_application/view/home/home_screen.dart';
 
 class OtpScreen extends StatelessWidget {
   final String phoneNumber;
@@ -129,7 +130,20 @@ class OtpScreen extends StatelessWidget {
                                   MaterialStatePropertyAll(Colors.black)),
                           onPressed: () {
                             //if (formKey.currentState!.validate()) {
-                            authProvider.otpSubmit(verificationId);
+                            authProvider
+                                .otpSubmit(verificationId)
+                                .then((value) => (value) {
+                                      authProvider.numberController.clear();
+                                      authProvider.otpController.clear();
+
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomeScreen(),
+                                          ));
+                                    });
+
                             //   }
                           },
                           child: Text(

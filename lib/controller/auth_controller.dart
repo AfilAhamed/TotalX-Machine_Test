@@ -21,4 +21,9 @@ class AuthController extends ChangeNotifier {
     await AuthServices().otpSubmit(otpController.text, verificationId);
     notifyListeners();
   }
+
+   // signOut from the app
+  Future<void> signOut() async {
+    await AuthServices().signOutUser();
+  }
 }

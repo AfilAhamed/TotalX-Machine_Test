@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:todo_list_application/model/user_model.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key});
+  final UserModel user;
+  const UserCard({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +22,12 @@ class UserCard extends StatelessWidget {
           leading: CircleAvatar(
             radius: 30,
             backgroundImage: Image.network(
-              "https://firebasestorage.googleapis.com/v0/b/chat-app-3f578.appspot.com/o/Profile_Pictures%2FgvPxnV6cLCXAZTGllQV2xOOR2yv2.jpg?alt=media&token=47611d29-1626-4575-ac0c-7f85c49e5389",
+              user.image,
               fit: BoxFit.cover,
             ).image,
           ),
           title: Text(
-            'Afil Ahamed',
+            user.name,
             style: GoogleFonts.montserrat(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -38,7 +40,7 @@ class UserCard extends StatelessWidget {
                 height: mq.height * 0.007,
               ),
               Text(
-                'Age: 34',
+                'Age: ${user.age}',
                 style: GoogleFonts.montserrat(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
