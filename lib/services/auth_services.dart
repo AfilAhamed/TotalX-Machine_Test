@@ -50,8 +50,7 @@ class AuthServices {
     }
   }
 
-
-   //signOut from the app
+  //signOut from the app
   Future<void> signOutUser() async {
     try {
       await firebaseAuth.signOut();

@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list_application/controller/user_controller.dart';
-import 'package:todo_list_application/view/home/home_screen.dart';
 import 'controller/auth_controller.dart';
+import 'controller/user_controller.dart';
 import 'firebase_options.dart';
 import 'view/auth/login_screen.dart';
+import 'view/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
         home:
-           auth.currentUser != null ? const HomeScreen() : const LoginScreen(),
+            auth.currentUser != null ? const HomeScreen() : const LoginScreen(),
       ),
     );
   }

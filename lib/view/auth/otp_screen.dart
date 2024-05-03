@@ -14,7 +14,6 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
-    //  final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(),
@@ -54,13 +53,6 @@ class OtpScreen extends StatelessWidget {
                     height: mq.height * 0.035,
                   ),
                   Pinput(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the otp';
-                      } else {
-                        return null;
-                      }
-                    },
                     controller: authProvider.otpController,
                     length: 6,
                     defaultPinTheme: PinTheme(
@@ -129,22 +121,20 @@ class OtpScreen extends StatelessWidget {
                               backgroundColor:
                                   MaterialStatePropertyAll(Colors.black)),
                           onPressed: () {
-                            //if (formKey.currentState!.validate()) {
-                            authProvider
-                                .otpSubmit(verificationId)
-                                .then((value) => (value) {
-                                      authProvider.numberController.clear();
-                                      authProvider.otpController.clear();
+                            if (authProvider.otpController.text.length==6) {
+                              authProvider
+                                  .otpSubmit(verificationId)
+                                  .then((value) {
+                                authProvider.numberController.clear();
+                                authProvider.otpController.clear();
 
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen(),
-                                          ));
-                                    });
-
-                            //   }
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ));
+                              });
+                            }
                           },
                           child: Text(
                             'Verify',

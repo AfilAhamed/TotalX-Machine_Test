@@ -11,8 +11,11 @@ class UserController extends ChangeNotifier {
   UserServices userServices = UserServices();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
+
   String imagePath = "";
   List<UserModel> usersList = [];
+  List<UserModel> filterUsersList = [];
 
   // add users
   void addUsers() async {
@@ -39,6 +42,19 @@ class UserController extends ChangeNotifier {
     if (image != null) {
       imagePath = image.path;
     }
+    notifyListeners();
+  }
+
+  // search Functionality
+  void search(String search) {
+    filterUsersList.clear(); // Clear previous search results
+
+    filterUsersList.addAll(usersList.where((user) =>
+        user.name.toLowerCase().contains(search.toLowerCase()) ||
+        user.age
+            .toString()
+            .toLowerCase()
+            .contains(search.toLowerCase()))); // Filter users by name or age
     notifyListeners();
   }
 }
