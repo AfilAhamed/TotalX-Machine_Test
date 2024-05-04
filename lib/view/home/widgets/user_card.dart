@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todo_list_application/model/user_model.dart';
+import '../../../model/user_model.dart';
 
 class UserCard extends StatelessWidget {
   final UserModel user;

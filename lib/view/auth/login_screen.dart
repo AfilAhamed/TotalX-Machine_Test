@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list_application/controller/auth_controller.dart';
-import 'package:todo_list_application/helpers/snackbar.dart';
+import '../../controller/auth_controller.dart';
+import '../../helpers/snackbar.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

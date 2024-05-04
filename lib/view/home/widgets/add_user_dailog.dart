@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list_application/controller/user_controller.dart';
-import 'package:todo_list_application/helpers/snackbar.dart';
-import 'package:todo_list_application/view/home/widgets/image_picker_sheet.dart';
+import '../../../controller/user_controller.dart';
+import '../../../helpers/snackbar.dart';
+import 'image_picker_sheet.dart';
+
 
 class AddUserDailog extends StatelessWidget {
   const AddUserDailog({

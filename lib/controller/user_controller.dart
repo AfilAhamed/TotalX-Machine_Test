@@ -17,6 +17,7 @@ class UserController extends ChangeNotifier {
   List<UserModel> usersList = []; // all users list
   List<UserModel> filterUsersList = [];
   int selectedValue = 1;
+  bool isFetchingData = false;
 
   // add users
   void addUsers() async {
@@ -26,6 +27,7 @@ class UserController extends ChangeNotifier {
     final image = await userServices.getUserProfilePicture(File(imagePath));
     final userData = UserModel(name: name, age: int.parse(age), image: image);
     userServices.addUsers(userData);
+    isFetchingData = !isFetchingData;
     getAllUsers();
     notifyListeners();
   }
@@ -35,7 +37,10 @@ class UserController extends ChangeNotifier {
     usersList = await userServices.getUsers();
     if (usersList.isNotEmpty) {
       filterUsersList.clear();
+      isFetchingData = true;
+
       filterUsersList.addAll(usersList);
+      isFetchingData = false;
     }
     notifyListeners();
   }

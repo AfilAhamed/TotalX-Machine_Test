@@ -156,24 +156,32 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
-                    child: userProvider.filterUsersList.isEmpty
+                    child: userProvider.isFetchingData
                         ? const Center(
                             child: CircularProgressIndicator(
                               color: Colors.black,
                               strokeWidth: 2,
                             ),
                           )
-                        : ListView.builder(
-                            itemCount: userProvider.filterUsersList.length,
-                            itemBuilder: (context, index) {
-                              final data = userProvider.filterUsersList[index];
-                              return UserCard(
-                                user: data,
-                              ); //User Details Card
-                            },
-                          ),
+                        : userProvider.filterUsersList.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No users found.',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: userProvider.filterUsersList.length,
+                                itemBuilder: (context, index) {
+                                  final data =
+                                      userProvider.filterUsersList[index];
+                                  return UserCard(
+                                    user: data,
+                                  ); // user card
+                                },
+                              ),
                   ),
-                )
+                ),
               ],
             );
           },
