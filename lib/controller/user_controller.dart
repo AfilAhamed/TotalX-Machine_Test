@@ -14,8 +14,9 @@ class UserController extends ChangeNotifier {
   final TextEditingController searchController = TextEditingController();
 
   String imagePath = "";
-  List<UserModel> usersList = [];
+  List<UserModel> usersList = []; // all users list
   List<UserModel> filterUsersList = [];
+  int selectedValue = 1;
 
   // add users
   void addUsers() async {
@@ -32,6 +33,10 @@ class UserController extends ChangeNotifier {
   //get all users
   Future<void> getAllUsers() async {
     usersList = await userServices.getUsers();
+    if (usersList.isNotEmpty) {
+      filterUsersList.clear();
+      filterUsersList.addAll(usersList);
+    }
     notifyListeners();
   }
 
@@ -48,13 +53,29 @@ class UserController extends ChangeNotifier {
   // search Functionality
   void search(String search) {
     filterUsersList.clear(); // Clear previous search results
-
+    selectedValue = 1;
     filterUsersList.addAll(usersList.where((user) =>
         user.name.toLowerCase().contains(search.toLowerCase()) ||
         user.age
             .toString()
             .toLowerCase()
             .contains(search.toLowerCase()))); // Filter users by name or age
+    notifyListeners();
+  }
+
+  // sort user based on Age
+  void sortUser(int value) {
+    selectedValue = value;
+    if (selectedValue == 1) {
+      filterUsersList.clear();
+      filterUsersList.addAll(usersList); //All
+    } else if (selectedValue == 2) {
+      filterUsersList =
+          usersList.where((item) => item.age >= 60).toList(); // Elder
+    } else if (selectedValue == 3) {
+      filterUsersList =
+          usersList.where((item) => item.age < 60).toList(); //Younger
+    }
     notifyListeners();
   }
 }

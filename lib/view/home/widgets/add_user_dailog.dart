@@ -104,7 +104,6 @@ class AddUserDailog extends StatelessWidget {
                   ),
                   TextFormField(
                     controller: userProvider.nameController,
-                    
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -130,7 +129,6 @@ class AddUserDailog extends StatelessWidget {
                     height: 5,
                   ),
                   TextFormField(
-                   
                     controller: userProvider.ageController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -147,7 +145,7 @@ class AddUserDailog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SizedBox(
-                        width: mq.width * .27,
+                        width: mq.width * .28,
                         height: mq.height * 0.046,
                         child: ElevatedButton(
                             style: ButtonStyle(

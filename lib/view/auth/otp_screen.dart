@@ -22,6 +22,7 @@ class OtpScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Consumer<AuthController>(
             builder: (context, authProvider, child) {
+              
               return Column(
                 children: [
                   Center(
@@ -45,7 +46,7 @@ class OtpScreen extends StatelessWidget {
                     height: mq.height * 0.030,
                   ),
                   Text(
-                    'Enter the verification code we just sent to your number +91 ********21.',
+                    'Enter the verification code we just sent to your number +91 ********${phoneNumber.substring(phoneNumber.length - 2)}.',
                     style: GoogleFonts.montserrat(
                         fontSize: 16, fontWeight: FontWeight.w400),
                   ),
@@ -80,7 +81,7 @@ class OtpScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      '59 Sec',
+                      '${authProvider.counter} Sec',
                       style: GoogleFonts.montserrat(
                           color: Colors.red,
                           fontSize: 14,

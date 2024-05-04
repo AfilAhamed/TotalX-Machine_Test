@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/auth_services.dart';
 
 class AuthController extends ChangeNotifier {
   final TextEditingController numberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
+
+  late Timer timer;
+  int counter = 59;
 
   //login using phone number
   void loginWithPhoneNumber(BuildContext context) {
@@ -13,6 +17,7 @@ class AuthController extends ChangeNotifier {
       phoneNumber = "+91$phoneNumber";
     }
     AuthServices().loginWithPhoneNumber(context, phoneNumber);
+    startTimer();
     notifyListeners();
   }
 
@@ -22,8 +27,24 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
   }
 
-   // signOut from the app
+  // signOut from the app
   Future<void> signOut() async {
     await AuthServices().signOutUser();
+  }
+
+  //otp time period
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (counter > 0) {
+        counter--;
+        notifyListeners();
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void disposeTimer() {
+    timer.cancel();
   }
 }

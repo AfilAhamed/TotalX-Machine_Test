@@ -120,9 +120,8 @@ class HomeScreen extends StatelessWidget {
                                     RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(11))),
-                                backgroundColor:
-                                    const MaterialStatePropertyAll(
-                                        Colors.black)),
+                                backgroundColor: const MaterialStatePropertyAll(
+                                    Colors.black)),
                             onPressed: () {
                               showModalBottomSheet(
                                 context: context,
@@ -155,22 +154,24 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 7),
-                    child: ListView.builder(
-                      itemCount: userProvider.searchController.text.isEmpty
-                          ? userProvider.usersList.length
-                          : userProvider.filterUsersList.length,
-                      itemBuilder: (context, index) {
-                        final data =
-                            userProvider.searchController.text.isEmpty
-                                ? userProvider.usersList[index]
-                                : userProvider.filterUsersList[index];
-                        return UserCard(
-                          user: data,
-                        ); //User Details Card
-                      },
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
+                    child: userProvider.filterUsersList.isEmpty
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: userProvider.filterUsersList.length,
+                            itemBuilder: (context, index) {
+                              final data = userProvider.filterUsersList[index];
+                              return UserCard(
+                                user: data,
+                              ); //User Details Card
+                            },
+                          ),
                   ),
                 )
               ],
