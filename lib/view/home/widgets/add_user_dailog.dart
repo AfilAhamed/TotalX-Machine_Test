@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_application/controller/user_controller.dart';
+import 'package:todo_list_application/helpers/snackbar.dart';
 import 'package:todo_list_application/view/home/widgets/image_picker_sheet.dart';
 
 class AddUserDailog extends StatelessWidget {
@@ -157,6 +158,9 @@ class AddUserDailog extends StatelessWidget {
                                     Color.fromARGB(255, 206, 206, 206))),
                             onPressed: () {
                               Navigator.pop(context);
+                              userProvider.nameController.clear();
+                              userProvider.ageController.clear();
+                              userProvider.imagePath = '';
                             },
                             child: Text(
                               'Cancel',
@@ -182,12 +186,16 @@ class AddUserDailog extends StatelessWidget {
                                     Colors.blue.shade600)),
                             onPressed: () {
                               if (userProvider.nameController.text.isNotEmpty ||
-                                  userProvider.ageController.text.isNotEmpty) {
+                                  userProvider.ageController.text.isNotEmpty ||
+                                  userProvider.imagePath.isNotEmpty) {
                                 userProvider.addUsers();
                                 Navigator.pop(context);
                                 userProvider.nameController.clear();
                                 userProvider.ageController.clear();
                                 userProvider.imagePath = '';
+                              } else {
+                                showSnackBar(context, 'Please add all fields',
+                                    Colors.red);
                               }
                             },
                             child: Text(

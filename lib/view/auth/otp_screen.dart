@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_list_application/controller/auth_controller.dart';
 import 'package:todo_list_application/view/home/home_screen.dart';
 
+import '../../helpers/snackbar.dart';
+
 class OtpScreen extends StatelessWidget {
   final String phoneNumber;
   final String verificationId;
@@ -22,7 +24,6 @@ class OtpScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Consumer<AuthController>(
             builder: (context, authProvider, child) {
-              
               return Column(
                 children: [
                   Center(
@@ -122,19 +123,28 @@ class OtpScreen extends StatelessWidget {
                               backgroundColor:
                                   MaterialStatePropertyAll(Colors.black)),
                           onPressed: () {
-                            if (authProvider.otpController.text.length==6) {
+                            if (authProvider.otpController.text.length == 6) {
                               authProvider
                                   .otpSubmit(verificationId)
                                   .then((value) {
-                                authProvider.numberController.clear();
-                                authProvider.otpController.clear();
-
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => const HomeScreen(),
                                     ));
+                                authProvider.numberController.clear();
+                                authProvider.otpController.clear();
+                                authProvider.disposeTimer();
                               });
+                            } else if (authProvider.otpController.text.length <
+                                6) {
+                              showSnackBar(context, 'Please enter 6 digit otp',
+                                  Colors.red);
+                            }else if(authProvider.otpController.text.isEmpty){
+                              showSnackBar(
+                                    context,
+                                    'Please enter the otp code',
+                                    Colors.red);
                             }
                           },
                           child: Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_application/controller/auth_controller.dart';
+import 'package:todo_list_application/helpers/snackbar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -9,7 +10,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
-    //final formKey = GlobalKey<FormState>();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -124,9 +124,24 @@ class LoginScreen extends StatelessWidget {
                                 backgroundColor:
                                     MaterialStatePropertyAll(Colors.black)),
                             onPressed: () {
-                              // if (formKey.currentState!.validate()) {
-                              authProvider.loginWithPhoneNumber(context);
-                              // }
+                              if (authProvider
+                                  .numberController.text.length==10) {
+                                authProvider.loginWithPhoneNumber(context);
+                              } else if (authProvider
+                                  .numberController.text.isEmpty) {
+                                showSnackBar(
+                                    context,
+                                    'Please enter the phone number',
+                                    Colors.red);
+                              } else if (authProvider
+                                      .numberController.text.length <10||authProvider
+                                      .numberController.text.length >10
+                                  ) {
+                               showSnackBar(
+                                    context,
+                                    'Please enter a 10 digit number',
+                                    Colors.red);
+                              }
                             },
                             child: Text(
                               'Get OTP',
