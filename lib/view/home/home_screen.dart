@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../controller/auth_controller.dart';
 import '../../controller/user_controller.dart';
+import '../../model/user_model.dart';
 import '../auth/login_screen.dart';
 import 'widgets/add_user_dailog.dart';
 import 'widgets/sort_bottom_sheet.dart';
@@ -66,6 +67,12 @@ class HomeScreen extends StatelessWidget {
         ),
         body: Consumer<UserController>(
           builder: (context, userProvider, child) {
+            List<UserModel> displayList =
+                userProvider.searchController.text.isNotEmpty
+                    ? userProvider.filterUsersList
+                    : userProvider.isSorting
+                        ? userProvider.filterUsersList
+                        : userProvider.usersList;
             return Column(
               children: [
                 Padding(
@@ -156,14 +163,7 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
-                    child: userProvider.isFetchingData
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : userProvider.filterUsersList.isEmpty
+                    child: userProvider.usersList.isEmpty
                             ? const Center(
                                 child: Text(
                                   'No users found.',
@@ -171,13 +171,28 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               )
                             : ListView.builder(
-                                itemCount: userProvider.filterUsersList.length,
+                                controller: userProvider.scrollController,
+                                itemCount:
+                                    userProvider.searchController.text.isEmpty
+                                        ? displayList.length + 1
+                                        : displayList.length,
                                 itemBuilder: (context, index) {
-                                  final data =
-                                      userProvider.filterUsersList[index];
-                                  return UserCard(
-                                    user: data,
-                                  ); // user card
+                                  if (index < displayList.length) {
+                                    final data = displayList[index];
+                                    return UserCard(
+                                      user: data,
+                                    ); // user card
+                                  } else if (userProvider.usersList.length ==
+                                      userProvider.allUsersList.length) {
+                                    return const SizedBox();
+                                  } else {
+                                    return const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
+                                    );
+                                  }
                                 },
                               ),
                   ),

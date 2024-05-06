@@ -33,7 +33,11 @@ class ImagePickerBottomSheet extends StatelessWidget {
                     onPressed: () async {
                       await userProvider
                           .pickUserPrfoile(ImageSource.gallery)
-                          .then((value) => Navigator.pop(context));
+                          .then((value) {
+                                                  FocusScope.of(context).unfocus();
+
+                        Navigator.pop(context);
+                      });
                     },
                     child: Image.asset('assets/images/gallery.png')),
                 ElevatedButton(

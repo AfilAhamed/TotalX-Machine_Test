@@ -16,12 +16,30 @@ class UserServices {
     firestore.add(data);
   }
 
-  //get users from firestore
-  Future<List<UserModel>> getUsers() async {
+  //get initial limited users from firestore for LazyLoading
+  Future<List<QueryDocumentSnapshot>> getUsers() async {
+    final data = await firestore.orderBy('name').limit(7).get();//fetch initialy by 7 users
+    return data.docs;
+  }
+
+  //get more users from firestore when scrolling
+  Future<List<QueryDocumentSnapshot>> getMoreUsers(lastDocument) async {
+    final data = await firestore
+        .orderBy('name')
+        .startAfterDocument(lastDocument)
+        .limit(3) // fetch users by 3
+        .get();
+    return data.docs;
+  }
+
+  //get all users from firestore
+  Future<List<UserModel>> getAllUsers() async {
     final data = await firestore.orderBy('name').get();
-    return data.docs
+
+    final allData = data.docs
         .map((value) => UserModel.fromMap(value.data() as Map<String, dynamic>))
         .toList();
+    return allData;
   }
 
   // add image to firebase storage and return
